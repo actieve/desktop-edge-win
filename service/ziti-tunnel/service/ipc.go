@@ -835,14 +835,15 @@ func toggleIdentity(out *json.Encoder, fingerprint string, onOff bool) {
 			Payload: nil,
 		})
 	} else {
-		if onOff {
+		/*if onOff {
 			connectIdentity(id)
 		} else {
 			err := disconnectIdentity(id)
 			if err != nil {
 				log.Warnf("could not disconnect identity: %v", err)
 			}
-		}
+		}*/
+		setZitiEnabled(id, onOff)
 		id.Active = onOff
 		rts.SaveState()
 		respond(out, dto.Response{Message: "identity toggled", Code: SUCCESS, Error: "", Payload: Clean(id)})
@@ -1099,6 +1100,11 @@ func removeIdentity(out *json.Encoder, fingerprint string) {
 	respond(out, resp)
 	// call shutdown some day id.CId.Shutdown()
 	log.Infof("request to remove identity by fingerprint: %s responded to", fingerprint)
+}
+
+func setZitiEnabled(id *Id, enabled bool) {
+	log.Infof("Set ziti identity: %s enabled:%t", id.Name, enabled)
+	cziti.SetZitiEnabled(id.CId, enabled)
 }
 
 func respond(out *json.Encoder, thing interface{}) {

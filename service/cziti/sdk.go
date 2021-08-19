@@ -41,6 +41,8 @@ void ziti_dump_to_file(void *ctx, char* outputPath);
 int ziti_dump_to_log(void *ctx, void* stringsBuilder);
 void* stailq_first_forgo(void* entries);
 
+void ziti_set_enabled(ziti_context ztx, bool enabled);
+
 */
 import "C"
 import (
@@ -350,11 +352,11 @@ func serviceCB(ziti_ctx C.ziti_context, service *C.ziti_service, status C.int, z
 	name := C.GoString(service.name)
 	svcId := C.GoString(service.id)
 	log.Debugf("============ INSIDE serviceCB - status: %s:%s - %v, %v ============", name, svcId, status, service.perm_flags)
-	if zid.Active {
+	// if zid.Active {
 		C.ziti_sdk_c_on_service(ziti_ctx, service, status, unsafe.Pointer(theTun.tunCtx))
-	} else {
+	/*} else {
 		log.Infof("Identity is disabled. Manually enable the identity to add intercepts")
-	}
+	}*/
 
 	var protocols []string
 	var portRanges []dto.PortRange
@@ -887,6 +889,10 @@ func ZitiDumpOnShutdown(zid *ZIdentity) {
 
 func InitTunnelerDns(ipBase uint32, mask int) {
 	C.ziti_tunneler_init_dns(C.uint32_t(ipBase), C.int(mask))
+}
+
+func SetZitiEnabled(zid *ZIdentity, enabled bool) {
+	C.ziti_set_enabled(zid.czctx, C.bool(enabled))
 }
 
 var addressCount = make(map[string]int)
