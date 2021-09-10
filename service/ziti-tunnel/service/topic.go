@@ -23,6 +23,9 @@ type topic struct {
 	done      chan bool
 }
 
+var closeConsumer = make(map[string]chan interface{}, 32)
+var closeConsumerCh = make(chan string, 32)
+
 func newTopic(cap int16) topic {
 	return topic{
 		broadcast: make(chan interface{}, cap),
@@ -36,7 +39,22 @@ func (t *topic) register(id string, c chan interface{}) {
 }
 
 func (t *topic) unregister(id string) {
+	c := t.channels[id]
 	delete(t.channels, id)
+	closeConsumer[id] = c
+	clearmessages(id)
+	closeConsumerCh <- id
+}
+
+func clearmessages(id string) {
+	c := closeConsumer[id]
+	log.Warnf("consumer has already exited the read loop, channel id:%s, Message count : %d", id, len(c))
+	if len(c) > 0 {
+		for i:=0; i < len(c); i++{
+			<- c
+		}
+		log.Tracef("channel with id:%s, Message count now : %d", id, len(c))
+	}
 }
 
 func (t *topic) shutdown() {
@@ -49,11 +67,21 @@ func (t *topic) run() {
 			select {
 			case msg := <-t.broadcast:
 				for id, c := range t.channels {
+					blocked := len(c) == cap(c)
 					if len(c) == cap(c) {
 						log.Warnf("channel with id [%s] is about to block!", id)
 					}
 					c <- msg
+					if blocked {
+						log.Tracef("channel with id [%s] message cleared!", id)
+					}
 				}
+				break
+			case consumerId := <- closeConsumerCh:
+				c := closeConsumer[consumerId]
+				delete(closeConsumer, consumerId)
+				close(c)
+				log.Tracef("channel with id:%s is closed", consumerId)
 				break
 			case <-t.done:
 				return
