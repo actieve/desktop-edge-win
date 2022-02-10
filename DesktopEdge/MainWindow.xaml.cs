@@ -799,7 +799,11 @@ namespace ZitiDesktopEdge {
 					IsUpdateAvailable = true;
 					MainMenu.ShowUpdateAvailable(evt.TimeRemaining, evt.InstallTime);
 					AlertCanvas.Visibility = Visibility.Visible;
-					ShowToast("An Update is Available for Ziti Desktop Edge, will initiate auto installation by " + evt.InstallTime);
+					if (evt.Code == 0) {
+						ShowToast("An Update is Available for Ziti Desktop Edge, will initiate auto installation by " + evt.InstallTime);
+					} else {
+						ShowToast("An Update is Available for Ziti Desktop Edge, client is configured for manual update");
+					}
 					SetNotifyIcon("");
 					// display a tag in UI and a button for the update software
 				}

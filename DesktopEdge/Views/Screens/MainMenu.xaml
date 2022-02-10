@@ -79,6 +79,8 @@
                     <local:SubOptionItem x:Name="ReleaseStreamItemStable" HorizontalAlignment="Stretch" Width="Auto" Label="Stable" MouseUp="SetReleaseStreamMenuAction"></local:SubOptionItem>
                     <local:SubOptionItem x:Name="ReleaseStreamItemBeta" HorizontalAlignment="Stretch" Width="Auto" Label="Beta" MouseUp="SetReleaseStreamMenuAction"></local:SubOptionItem>
                     <StackPanel Name="UpdateNowPanel" HorizontalAlignment="Center" Margin="0, 20, 0, 0">
+                        <CheckBox x:Name="AutoUpdateCheck" Content="AutoUpdate" IsChecked="True" Margin="10" Click="AutoUpdateCheck_Click"/>
+
                         <Button Name="CheckForUpdate" Height="40" Grid.Column="1" Margin="20,0,40,0" Width="260" Cursor="Hand" BorderThickness="0" Foreground="#FFFFFF" Background="#0069FF" Content="Check for Update" Click="CheckForUpdate_Click" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans">
                             <Button.Resources>
                                 <Style TargetType="Border">

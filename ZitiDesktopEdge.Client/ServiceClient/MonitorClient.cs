@@ -180,5 +180,17 @@ namespace ZitiDesktopEdge.ServiceClient {
             }
             return null;
         }
+
+        async public Task<SvcResponse> SetAutoUpdate(bool autoUpdate) {
+            string autoUpdateString = autoUpdate ? "true" : "false";
+            ActionEvent action = new ActionEvent() { Op = "SetAutoUpdate", Action = autoUpdateString };
+            try {
+                await sendAsync(action);
+                return await readAsync<SvcResponse>(ipcReader);
+			} catch (Exception ex) {
+                Logger.Error(ex, "Unexpected error");
+			}
+            return null;
+		}
     }
 }

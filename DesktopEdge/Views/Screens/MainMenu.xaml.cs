@@ -465,6 +465,22 @@ namespace ZitiDesktopEdge {
 			}
 		}
 
+		async public void AutoUpdateCheck_Click(object sender, RoutedEventArgs e) {
+			bool autoUpdate = Convert.ToBoolean(AutoUpdateCheck.IsChecked);
+
+			var monitorClient = (MonitorClient)Application.Current.Properties["MonitorClient"];
+			var r = await monitorClient.SetAutoUpdate(autoUpdate);
+			if (r == null) {
+				MainWindow.ShowError("Error when updating auto update configuration", "An error occurred while updating auto update configuration.");
+			} else {
+				if (!Application.Current.Properties.Contains("autoUpdate")) {
+					Application.Current.Properties.Add("autoUpdate", autoUpdate);
+				} else {
+					Application.Current.Properties["autoUpdate"] = autoUpdate;
+				}
+			}
+		}
+
 		public void SetupIdList(ZitiIdentity[] ids) {
 			IdListView.Children.Clear();
 			for (int i=0; i<ids.Length; i++) {

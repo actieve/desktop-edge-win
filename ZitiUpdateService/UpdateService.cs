@@ -59,6 +59,9 @@ namespace ZitiUpdateService {
 
 		private System.Timers.Timer dnsProbeTimer = new System.Timers.Timer();
 		private IPAddress dnsIpAddress = null;
+		private bool autoUpdate = true;
+		public const int AutoUpdateCode = 0;
+		public const int AppStoreUpdateCode = 1;
 
 		public UpdateService() {
 			InitializeComponent();
@@ -79,6 +82,7 @@ namespace ZitiUpdateService {
 			svr.SetReleaseStream = SetReleaseStream;
 			svr.DoUpdateCheck = DoUpdateCheck;
 			svr.TriggerUpdate = TriggerUpdate;
+			svr.SetAutoUpdate = SetAutoUpdate;
 
 		}
 
@@ -95,6 +99,18 @@ namespace ZitiUpdateService {
 			Logger.Debug("Timer initiating installation of {0}, exhausted allowed waiting time - {1}", timerState.zdeInstallerInfo.Version.ToString(), timerState._timer.Period);
 			checkUpdateImmediately();
 			Logger.Warn("If installation didnt complete, then the timer will initiate this function again at the next interval - {0}", timerState._timer.Period);
+		}
+
+		private SvcResponse SetAutoUpdate(bool autoUpdate) {
+			SvcResponse r = new SvcResponse();
+			string autoUpdateString = autoUpdate ? "true" : "false";
+			if (ConfigurationManager.AppSettings.Get("AutoUpdate") != null) {
+				ConfigurationManager.AppSettings.Set("AutoUpdate", autoUpdateString);
+			} else {
+				ConfigurationManager.AppSettings.Add("AutoUpdate", autoUpdateString);
+			}
+			r.Message = $"Updated auto update configuration to {autoUpdate}";
+			return r;
 		}
 
 		private void checkUpdateImmediately() {
@@ -677,12 +693,25 @@ namespace ZitiUpdateService {
 				if (sender == null && e == null) {
 					installZDE(fileDestination, filename);
 				} else {
+					var autoUpdateConfig = ConfigurationManager.AppSettings.Get("AutoUpdate");
+					try {
+						autoUpdate = bool.Parse(autoUpdateConfig);
+					} catch(Exception parseException) {
+						Logger.Warn("Failed to parse {0} due to {1}", autoUpdateConfig, parseException);
+						// set it to default value if parse fails
+						autoUpdate = true;
+					}
 					Checkers.ZDEInstallerInfo info = check.GetZDEInstallerInfo(fileDestination);
+
+					if (!autoUpdate) {
+						info.TimeRemaining = -1;
+						NotifyInstallationUpdates(info, AppStoreUpdateCode, "");
+					}
 
 					if (info.IsCritical) {
 						info.TimeRemaining = 0;
 						info.InstallTime = DateTime.Now;
-						NotifyInstallationUpdates(info, 0, "");
+						NotifyInstallationUpdates(info, AutoUpdateCode, "");
 						installZDE(fileDestination, filename);
 					} else if (!info.IsCritical && _installationReminder == null) {
 						// Timer for installation reminder
@@ -703,7 +732,7 @@ namespace ZitiUpdateService {
 						info.InstallTime = DateTime.Now.AddMilliseconds(_installationReminder.DueTime.TotalMilliseconds);
 						Logger.Info("Installation reminder for ZDE version {0} is set to {1}, TimeRemaining - {2}, approximate install time - {3}", info.Version, instInt, info.TimeRemaining, info.InstallTime);
 
-						NotifyInstallationUpdates(info, 0, "");
+						NotifyInstallationUpdates(info, AutoUpdateCode, "");
 					}
 
 					if (_installationReminder != null) {
@@ -721,7 +750,7 @@ namespace ZitiUpdateService {
 			info.InstallTime = DateTime.Now.AddMilliseconds(_installationReminder.DueTime.TotalMilliseconds);
 			Logger.Info("Installation of ZDE version {0} will be initiated in {1} seconds, approximately at {2}", info.Version, info.TimeRemaining, info.InstallTime);
 			if (newClient || (info.TimeRemaining > 0 && (info.TimeRemaining / 1000) < 1)) {
-				return NotifyInstallationUpdates(info, 0, "");
+				return NotifyInstallationUpdates(info, AutoUpdateCode, "");
 			}
 			return null;
 		}

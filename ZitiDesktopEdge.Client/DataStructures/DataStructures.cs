@@ -357,6 +357,7 @@ namespace ZitiDesktopEdge.DataStructures {
         public ServiceVersion ServiceVersion { get; set; }
         public bool AddDns { get; set; }
         public int ApiPageSize { get; set; }
+        public bool AutoUpdate { get; set; }
 
         public void Dump(System.IO.TextWriter writer)
         {

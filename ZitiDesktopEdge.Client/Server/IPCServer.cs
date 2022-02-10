@@ -39,6 +39,9 @@ namespace ZitiDesktopEdge.Server {
         public delegate SvcResponse TriggerUpdateDelegate();
         public TriggerUpdateDelegate TriggerUpdate { get; set; }
 
+        public delegate SvcResponse SetAutoUpdateDelegate(bool autoUpdate);
+        public SetAutoUpdateDelegate SetAutoUpdate { get; set; }
+
         public IPCServer() {
             ipcPipeName = PipeName;
             eventPipeName = EventPipeName;
@@ -233,6 +236,16 @@ namespace ZitiDesktopEdge.Server {
                         break;
                     case "triggerupdate":
                         r = TriggerUpdate();
+                        break;
+                    case "setautoupdate":
+                        bool autoUpdate;
+                        try {
+                            autoUpdate = bool.Parse(ae.Action);
+                        } catch (Exception parseEx) {
+                            Logger.Error($"Could not parse auto update value {ae.Action} due to {parseEx}");
+                            autoUpdate = true;
+                        }
+                        r = SetAutoUpdate(autoUpdate);
                         break;
                     default:
                         r.Message = "FAILURE";
