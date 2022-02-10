@@ -104,11 +104,7 @@ namespace ZitiUpdateService {
 		private SvcResponse SetAutoUpdate(bool autoUpdate) {
 			SvcResponse r = new SvcResponse();
 			string autoUpdateString = autoUpdate ? "true" : "false";
-			if (ConfigurationManager.AppSettings.Get("AutoUpdate") != null) {
-				ConfigurationManager.AppSettings.Set("AutoUpdate", autoUpdateString);
-			} else {
-				ConfigurationManager.AppSettings.Add("AutoUpdate", autoUpdateString);
-			}
+			CustomProperties.SaveProperty("AutoUpdate", autoUpdateString);
 			r.Message = $"Updated auto update configuration to {autoUpdate}";
 			return r;
 		}
@@ -693,14 +689,19 @@ namespace ZitiUpdateService {
 				if (sender == null && e == null) {
 					installZDE(fileDestination, filename);
 				} else {
-					var autoUpdateConfig = ConfigurationManager.AppSettings.Get("AutoUpdate");
-					try {
-						autoUpdate = bool.Parse(autoUpdateConfig);
-					} catch(Exception parseException) {
-						Logger.Warn("Failed to parse {0} due to {1}", autoUpdateConfig, parseException);
-						// set it to default value if parse fails
+					var autoUpdateConfig = CustomProperties.GetProperty("AutoUpdate");
+					if (autoUpdateConfig == null) {
 						autoUpdate = true;
+					} else {
+						try {
+							autoUpdate = bool.Parse(autoUpdateConfig);
+						} catch (Exception parseException) {
+							Logger.Warn("Failed to parse {0} due to {1}", autoUpdateConfig, parseException);
+							// set it to default value if parse fails
+							autoUpdate = true;
+						}
 					}
+					
 					Checkers.ZDEInstallerInfo info = check.GetZDEInstallerInfo(fileDestination);
 
 					if (!autoUpdate) {
