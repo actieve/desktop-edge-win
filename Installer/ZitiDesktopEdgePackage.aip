@@ -16,7 +16,7 @@
     <ROW Property="Manufacturer" Value="NetFoundry, Inc"/>
     <ROW Property="ProductCode" Value="1033:{5FD8BFD2-1990-4E3C-AC96-0F7CA0765B7C} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
-    <ROW Property="ProductName" Value="ZitiDesktopEdge"/>
+    <ROW Property="ProductName" Value="Ziti Desktop Edge"/>
     <ROW Property="ProductVersion" Value="1.12.2"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{7C2ABB7D-8FC5-432B-9AB0-2E0BB364FC6A}"/>
@@ -441,7 +441,7 @@
     <ROW XmlElement="DesktopAppMigration" ParentElement="Extension" Name="DesktopAppMigration" Order="0" Flags="0" Type="0"/>
     <ROW XmlElement="DesktopApp_1" ParentElement="DesktopAppMigration" Name="DesktopApp" Order="1" Flags="0" Type="0"/>
     <ROW XmlElement="DesktopApp_3" ParentElement="DesktopAppMigration" Name="DesktopApp" Order="3" Flags="0" Type="0"/>
-    <ROW XmlElement="DisplayName" ParentElement="Properties" Name="DisplayName" Order="1" Flags="0" Text="ZitiDesktopEdge" Type="0"/>
+    <ROW XmlElement="DisplayName" ParentElement="Properties" Name="DisplayName" Order="1" Flags="0" Text="Ziti Desktop Edge" Type="0"/>
     <ROW XmlElement="Extension" ParentElement="Extensions" Name="Extension" Order="0" Flags="0" Type="55"/>
     <ROW XmlElement="Extension_1" ParentElement="Extensions_1" Name="Extension" Order="0" Flags="0" Type="110"/>
     <ROW XmlElement="Extension_2" ParentElement="Extensions_2" Name="Extension" Order="0" Flags="0" Type="110"/>
