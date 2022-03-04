@@ -393,7 +393,7 @@
     <ROW XmlAttribute="Language" XmlElement="Resource" Name="Language" Flags="0" Order="0" Value="en-US"/>
     <ROW XmlAttribute="MaxVersionTested" XmlElement="TargetDeviceFamily" Name="MaxVersionTested" Flags="0" Order="0" Value="10.0.22000.0"/>
     <ROW XmlAttribute="MinVersion" XmlElement="TargetDeviceFamily" Name="MinVersion" Flags="0" Order="0" Value="10.0.17763.0"/>
-    <ROW XmlAttribute="Name" XmlElement="Identity" Name="Name" Flags="0" Order="0" Value="NetFoundryInc.ZitiDesktopEdge"/>
+    <ROW XmlAttribute="Name" XmlElement="Identity" Name="Name" Flags="0" Order="0" Value="NetFoundryInc.WindowsDesktopEdge"/>
     <ROW XmlAttribute="Name_1" XmlElement="Capability" Name="Name" Flags="0" Order="0" Value="runFullTrust"/>
     <ROW XmlAttribute="Name_2" XmlElement="TargetDeviceFamily" Name="Name" Flags="0" Order="0" Value="Windows.Desktop"/>
     <ROW XmlAttribute="Name_3" XmlElement="Service" Name="Name" Flags="0" Order="0" Value="ziti-edge-tunnel"/>
