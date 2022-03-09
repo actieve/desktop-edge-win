@@ -49,7 +49,6 @@
 
                 <TextBox Name="NoAuthServices" Height="30" FontWeight="Bold" Margin="10,0,10,0" TextAlignment="Center" Text="You must authenticate to access services" IsReadOnly="True" HorizontalAlignment="Stretch" BorderThickness="0" ClipToBounds="True" Grid.Column="0" Grid.Row="5" VerticalAlignment="Center" Padding="0,6,3,0" FontSize="12" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="Black"></TextBox>
                 <Grid Name="MainDetailScroll" MaxHeight="160" Margin="10,0,10,-10">
-                    <Rectangle Margin="10,10,10,10" Fill="#070826" RadiusY="10" RadiusX="10"></Rectangle>
                     <ListView x:Name="ServiceList" VirtualizingPanel.IsVirtualizing="True" ScrollViewer.IsDeferredScrollingEnabled="True" ScrollViewer.ScrollChanged="Scrolled" Focusable="False" IsManipulationEnabled="False" BorderThickness="0" Background="Transparent" Margin="20,20,10,20" Style="{DynamicResource ServiceListStyle}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="{x:Type ListViewItem}">
@@ -73,13 +72,9 @@
                                         <ColumnDefinition x:Name="WarningColumn" Width="20"/>
                                         <ColumnDefinition x:Name="DetailColumn" Width="20"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Orientation="Vertical" Height="30" Grid.Column="0">
-                                        <TextBlock Name="MainLabel" Text="{Binding Name}" Padding="0,0,12,0" Height="15" FontWeight="Bold" Background="Transparent" ClipToBounds="True" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" FontSize="11" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="White"></TextBlock>
-                                        <TextBlock Name="MainEdit" Text="{Binding AddressString}" Height="14" Padding="0,0,12,0" Background="Transparent" ClipToBounds="True" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontSize="10" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="LightGray"></TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Vertical" Height="30" Grid.Column="1">
-                                        <TextBlock Name="Protocols" Text="{Binding ProtocolString}" Padding="0,0,12,0" Height="15" FontWeight="Bold" Background="Transparent" ClipToBounds="True" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="11" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="White" Opacity="0.9"></TextBlock>
-                                        <TextBlock Name="Ports" Text="{Binding PortString}" Height="14" Padding="0,0,12,0" HorizontalAlignment="Center" Background="Transparent" ClipToBounds="True" Grid.Column="0" VerticalAlignment="Top" FontSize="10" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="LightGray"></TextBlock>
+                                    <StackPanel Orientation="Horizontal" Height="30" Grid.Column="0">
+                                        <TextBlock Name="MainLabel" Text="{Binding Name}" Padding="0,0,12,0" Height="30" FontWeight="Bold" Background="Transparent" ClipToBounds="True" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" FontSize="14" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="Black"></TextBlock>
+                                        <TextBlock Name="MainEdit" Text="{Binding AddressString}" Height="14" Padding="0,0,12,0" Background="Transparent" ClipToBounds="True" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontSize="14" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="Black"></TextBlock>
                                     </StackPanel>
                                     <Image x:Name="TimerIcon" Visibility="{Binding TimerVisibility}" Source="/Assets/Images/timer.png" Grid.Column="2" Width="20" Height="20" Cursor="Hand" MouseUp="DoMFA"/>
                                     <Image x:Name="TimedOutIcon" Visibility="{Binding MfaVisibility}" Source="/Assets/Images/mfaoff.png" Grid.Column="2" Width="20" Height="20" Cursor="Hand" MouseUp="DoMFA"/>
